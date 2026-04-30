@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Dark mode toggle
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  if (darkModeToggle) {
+    const prefersDark = localStorage.getItem("darkMode") === "true";
+    if (prefersDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+      darkModeToggle.textContent = "☀️ Light Mode";
+    }
+    darkModeToggle.addEventListener("click", () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      if (isDark) {
+        document.documentElement.removeAttribute("data-theme");
+        darkModeToggle.textContent = "🌙 Dark Mode";
+        localStorage.setItem("darkMode", "false");
+      } else {
+        document.documentElement.setAttribute("data-theme", "dark");
+        darkModeToggle.textContent = "☀️ Light Mode";
+        localStorage.setItem("darkMode", "true");
+      }
+    });
+  }
+
   // DOM elements
   const activitiesList = document.getElementById("activities-list");
   const messageDiv = document.getElementById("message");
