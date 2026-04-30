@@ -519,6 +519,11 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    const shareText = encodeURIComponent(
+      `Check out "${name}" at Mergington High School! ${details.description}`
+    );
+    const shareUrl = encodeURIComponent(window.location.href);
+
     activityCard.innerHTML = `
       ${tagHtml}
       <h4>${name}</h4>
@@ -569,6 +574,22 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-section">
+        <button class="share-toggle-button" aria-label="Share this activity">
+          📤 Share
+        </button>
+        <div class="share-panel hidden">
+          <a class="share-btn share-twitter" href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter">
+            𝕏 Twitter
+          </a>
+          <a class="share-btn share-whatsapp" href="https://wa.me/?text=${shareText}%20${shareUrl}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp">
+            💬 WhatsApp
+          </a>
+          <button class="share-btn share-copy" aria-label="Copy link">
+            🔗 Copy Link
+          </button>
+        </div>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -586,6 +607,30 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Share toggle button
+    const shareToggle = activityCard.querySelector(".share-toggle-button");
+    const sharePanel = activityCard.querySelector(".share-panel");
+    shareToggle.addEventListener("click", () => {
+      sharePanel.classList.toggle("hidden");
+    });
+
+    // Copy link button
+    const copyButton = activityCard.querySelector(".share-copy");
+    copyButton.addEventListener("click", () => {
+      const text = `Check out "${name}" at Mergington High School! ${details.description} ${window.location.href}`;
+      navigator.clipboard.writeText(text).then(() => {
+        copyButton.textContent = "✅ Copied!";
+        setTimeout(() => {
+          copyButton.textContent = "🔗 Copy Link";
+        }, 2000);
+      }).catch(() => {
+        copyButton.textContent = "❌ Failed";
+        setTimeout(() => {
+          copyButton.textContent = "🔗 Copy Link";
+        }, 2000);
+      });
+    });
 
     activitiesList.appendChild(activityCard);
   }
